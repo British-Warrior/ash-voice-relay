@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ash Voice Relay</title>
+</head>
+<body>
+  <h2>Ash Voice Relay</h2>
+  <input id="transcript" type="text" placeholder="Say the magic phrase..." style="width: 300px;" />
+  <button onclick="sendTranscript()">Send</button>
+  <p id="status"></p>
+
+  <script>
+    async function sendTranscript() {
+      const transcript = document.getElementById('transcript').value;
+      const device_id = navigator.userAgent || "web-client";
+      const response = await fetch("https://YOUR-NGROK-URL-HERE.ngrok-free.app/api/voice_relay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ transcript, device_id })
+      });
+      const result = await response.json();
+      document.getElementById('status').innerText = result.status + ": " + (result.reason || "");
+    }
+  </script>
+</body>
+</html>
